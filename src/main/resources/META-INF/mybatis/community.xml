@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="org.iclass.dao.CommunityMapper">
+	<!--namespace에 mapper 인터페이스의 패키지 경로와 인터페이스명을 정확히 적어줍니다.-->
+	
+	<insert id="insert" parameterType="org.iclass.dto.CommunityDto" useGeneratedKeys="false">
+		insert into community values (
+			COMMUNITY_IDX_SEQ.nextval, #{writer}, #{title}, #{content}, 0, sysdate, #{ip}, 0
+		)
+		<!--insert 후에 증가된 시퀀스값(insert 된 idx값) 가져오기
+			: 파라미터 dto에 idx 필드에 저장하기-->
+		<!--sql에서 insert 후의 시퀀스의 currval을 idx property에 저장-->
+		<selectKey keyProperty="idx" resultType="int" order="AFTER">
+			select COMMUNITY_IDX_SEQ.currval from dual
+		</selectKey>
+	</insert>
+	
+	<update id="update" parameterType="org.iclass.dto.CommunityDto">
+		update community set title=#{title}, content=#{content} where idx=#{idx}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from community where idx=#{idx}
+	</delete>
+	
+	<!--#1:글 상세보기-->
+	<select id="selectByIdx" parameterType="int" resultType="org.iclass.dto.CommunityDto">
+		select * from community where idx = #{idx}
+	</select>
+	
+	<!--#2:댓글 목록: mapper xml을 따로 만들기-->
+	<!--테이블에 따라 mapper 분리하기 위함-->
+	
+	<!--#3:메인글 전체 개수-->
+	<select id="getCount" resultType="int">
+		select count(*) from community
+	</select>
+	
+	<!--#4:댓글 개수 조회-->
+	<select id="getCommentCount" parameterType="int" resultType="int">
+		select count(*) from communityComments where mref = #{mref}
+	</select>
+	
+	<!--#5:메인글 조회수 증가-->
+	<update id="setReadCount" parameterType="int">
+		update community set readCount = readCount + 1 where idx = #{idx}
+	</update>
+	
+	<!--#6:댓글 개수 증가 // 쿼리 수정이 필요 => 댓글 삭제 시 빼야함(별도 쿼리로 작성하기로)-->
+	<update id="setCommentCount" parameterType="int">
+		update community set commentCount = commentCount + 1 where idx = #{idx}
+	</update>
+
+	<!--#7: 페이지 별 글 목록 20개씩 조회-->
+	<select id="getList" parameterType="org.iclass.dto.PageReqDto" resultType="org.iclass.dto.CommunityDto">
+		select * from
+		    (select rownum rnum, temp.* from
+		        (select * from community order by idx desc) temp)
+		where rnum between #{startNo} and #{endNo}
+	</select>
+	
+</mapper>
