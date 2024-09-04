@@ -17,23 +17,22 @@ import lombok.extern.slf4j.Slf4j;
 public class CommunityController {
 
 		@GetMapping("/list")
-		public String list(@RequestParam(defaultValue = "1") int page, String columns, String keyword) {
+		public String list(@RequestParam(defaultValue = "1") int pageNo, String columns, String keyword) {
 			return "community/list";
 		}
 		
 		@GetMapping("/write")	// 글 쓰기 화면
-		public String write() {
+		public String write(@RequestParam(defaultValue = "1") int pageNo) {
 			return "community/write";
 		}
 		
 		@PostMapping("/write")	// 글 저장 후 글 목록으로 이동
-		public String write(CommunityDto dto, Model model) {
-			model.addAttribute("pageNo", 10);
+		public String write(CommunityDto dto) {
 			return "redirect:list";
 		}
 		
 		@GetMapping("/modify")	// 글 수정 화면
-		public String modify(int pageNo) {
+		public String modify(int idx, @RequestParam(defaultValue = "1") int pageNo) {
 			return "community/modify";
 		}
 		
@@ -44,8 +43,7 @@ public class CommunityController {
 		}
 		
 		@GetMapping("/read")
-		public String read(int idx, int pageNo, Model model) {
-			model.addAttribute("idx", 10);
+		public String read(int idx, @RequestParam(defaultValue = "1") int pageNo) {
 			return "community/read";
 		}
 		
