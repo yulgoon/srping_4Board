@@ -1,0 +1,44 @@
+@charset "UTF-8";
+table {
+	width: 80%;
+	border-collapse: collapse;
+	border: 2ps solid black;
+	box-sizing: border-box;
+	margin: auto;
+}
+
+td {
+	border: 1px solid gray;
+	padding: 0.5rem;
+	font-size: 1.2rem;
+	box-sizing: border-box;
+}
+
+tr.header > td {
+	font-weight: bold;
+	color: rgb(128, 0, 64);
+}
+
+td:first-child {
+	width: 10%;
+}
+
+td:nth-child(2) {
+	width: 20%;
+}
+
+td:nth-child(3) {
+	width: 40%;
+}
+
+td:nth-child(4) {
+	width: 10%;
+}
+
+td:nth-child(5) {
+	width: 10%;
+}
+
+td:last-child {
+	width: 10%;
+}

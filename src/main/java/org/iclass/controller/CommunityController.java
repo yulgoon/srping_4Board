@@ -1,23 +1,32 @@
 package org.iclass.controller;
 
+import java.util.Map;
+
 import org.iclass.dto.CommunityDto;
+import org.iclass.service.CommunityService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @Slf4j
 @RequestMapping("/community")
+@RequiredArgsConstructor
 public class CommunityController {
 
+		private final CommunityService service;
+	
 		@GetMapping("/list")
-		public String list(@RequestParam(defaultValue = "1") int pageNo, String columns, String keyword) {
+		public String list(@RequestParam(defaultValue = "1") int pageNo, String columns, String keyword, Model model) {
+			Map<String, Object> map = service.pageSearchList(pageNo);
+			model.addAttribute("list", map.get("list"));
+			model.addAttribute("pageDto", map.get("pageDto"));
 			return "community/list";
 		}
 		
@@ -43,7 +52,9 @@ public class CommunityController {
 		}
 		
 		@GetMapping("/read")
-		public String read(int idx, @RequestParam(defaultValue = "1") int pageNo) {
+		public String read(int idx, @RequestParam(defaultValue = "1") int pageNo, Model model) {
+			model.addAttribute("dto", service.read(idx));
+			model.addAttribute("pageNo", pageNo);
 			return "community/read";
 		}
 		

@@ -9,7 +9,7 @@ import lombok.ToString;
 @ToString
 public class PageReqDto {
 	
-	private int page = 1;		// 요청페이지
+	private int page = 1;		// 요청(현재)페이지
 	private int pageSize = 10;	// 한 페이지의 글 개수
 	private int startNo;	// 페이지 글목록의 시작 rownum
 	private int endNo;		// 페이지 글목록의 마지막 rownum
