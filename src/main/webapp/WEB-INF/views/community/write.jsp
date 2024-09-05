@@ -6,6 +6,32 @@
 <meta charset="UTF-8">
 <title>글 작성(등록)</title>
 </head>
+<script type="text/javascript">
+	const isValid = () => {
+		let result = true
+		const frm = document.forms[0]
+		const title = frm.title
+		const writer = frm.writer
+		const content = frm.content
+		
+		if(title.value == '') {
+			alert('글 제목 입력은 필수입니다.')
+			result = false
+			title.focus()
+		} else if(writer.value == '') {
+			alert('작성자 입력은 필수입니다.')
+			result = false
+			writer.focus()
+		} else if(content.value == '') {
+			alert('글내용 입력은 필수입니다.')
+			result = false
+			content.focus()
+		}
+		
+		// 참(true)을 리턴할 때만 onsubmit에서 submit 됩니다. submit 하기 전에 실행됩니다.
+		return result
+	}
+</script>
 <body>
 	<h2>글 쓰기(새 글 등록)</h2>
 	<hr>

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,25 +39,27 @@ public class CommunityController {
 		}
 		
 		@PostMapping("/write")	// 글 저장 후 글 목록으로 이동
-		public String write(CommunityDto dto) {
+		public String write(CommunityDto dto, RedirectAttributes reAttr) {
 			log.info(":::글쓰기 입력 dto: {}:::", dto);
 			service.write(dto);
+			reAttr.addFlashAttribute("message", "글이 등록되었습니다.");
 			return "redirect:list";
 		}
 		
 		@GetMapping("/modify")	// 글 수정 화면
 		public String modify(int idx, @RequestParam(defaultValue = "1") int pageNo, Model model) {
-			CommunityDto dto = service.read(idx);
+			CommunityDto dto = service.selectByIdx(idx);
 			model.addAttribute("dto", dto);
 			model.addAttribute("pageNo", pageNo);
 			return "community/modify";
 		}
 		
 		@PostMapping("/modify")	// 글 수정 후 글 목록으로 이동
-		public String modify(int pageNo, CommunityDto dto, Model model) {
+		public String modify(int pageNo, CommunityDto dto, RedirectAttributes reAttr) {
 			service.modify(dto);
-			model.addAttribute("idx", dto.getIdx());
-			model.addAttribute("pageNo", pageNo);
+			reAttr.addAttribute("idx", dto.getIdx());
+			reAttr.addAttribute("pageNo", pageNo);
+			reAttr.addFlashAttribute("message", "글이 수정되었습니다.");
 			return "redirect:read";
 		}
 		
@@ -68,7 +71,10 @@ public class CommunityController {
 		}
 		
 		@PostMapping("/remove")
-		public String remove(int idx, int pageNo) {
+		public String remove(int idx, int pageNo, RedirectAttributes reAttr) {
+			service.remove(idx);
+			reAttr.addAttribute("pageNo", pageNo);
+			reAttr.addFlashAttribute("message", "글이 삭제되었습니다.");
 			return "redirect:list";
 		}
 		

@@ -8,6 +8,9 @@
 <title>글 상세 보기</title>
 <link rel="stylesheet" href="../resources/css/read.css">
 </head>
+<script type="text/javascript">
+	if('${message }'.length != 0) alert('${message }')
+</script>
 <body>
 	<h2>글 상세 보기와 삭제</h2>
 	<hr>
@@ -39,7 +42,7 @@
 	</table>
 	<div>
 		<div class="btn"><a href="modify?idx=${dto.idx }&pageNo=${pageNo }">수정</a></div>
-		<div class="btn"><a href="#">삭제</a></div>
+		<div class="btn"><a href="javascript:remove()">삭제</a></div>
 		<div class="btn"><a href="list?pageNo=${pageNo }">목록</a></div>
 	</div>
 	<form action="remove" method="post">
@@ -47,5 +50,16 @@
 		<input type="hidden" name="pageNo" value="${pageNo }">
 		<!-- submit 버튼은 만들지 않고 위의 삭제 버튼이 클릭 되면 자바 스크립트를 실행해서 submit() 실행 -->
 	</form>
+	<script type="text/javascript">
+		const remove = () => {
+			/* form 요소는 배열 인덱스로 처리 가능합니다. */
+			const frm = document.forms[0]
+			const yn = confirm('이 글을 삭제하시겠습니까?')
+			if(yn) {
+				frm.action = 'remove'
+				frm.submit()
+			}
+		}
+	</script>
 </body>
 </html>
