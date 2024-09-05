@@ -51,4 +51,12 @@ public class CommunityService {
 //		return dto;
 		return mainDao.selectByIdx(idx);
 	}
+	
+	public void write(CommunityDto dto) {
+		mainDao.insert(dto);
+	}
+	
+	public void modify(CommunityDto dto) {
+		mainDao.update(dto);
+	}
 }

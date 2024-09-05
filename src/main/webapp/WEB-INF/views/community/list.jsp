@@ -23,7 +23,7 @@
 		<c:forEach items="${list }" var="dto">
 			<tr>
 				<td><c:out value="${dto.rnum }"/></td>
-				<td><c:out value="${dto.title }"/></td>
+				<td><a href="read?idx=${dto.idx }&pageNo=${pageDto.pageNo }"><c:out value="${dto.title }"/></a></td>
 				<td><c:out value="${dto.writer }"/></td>
 				<td><c:out value="${dto.readCount }"/></td>
 				<td><c:out value="${dto.createdAt }"/></td>
@@ -31,5 +31,7 @@
 		</c:forEach>
 	</table>
 	<p>현재 페이지 정보: <c:out value="${pageDto }"/></p>
+	<!-- 글쓰기를 완료 시에는 1페이지로 가면 되지만 글쓰기 화면에서 중단하고 원래 글목록 페이지로 이동할 때를 위하여 pageNo를 전달합니다. -->
+	<div class="btn"><a href="write?pageNo=${pageDto.pageNo }">글쓰기</a></div>
 </body>
 </html>

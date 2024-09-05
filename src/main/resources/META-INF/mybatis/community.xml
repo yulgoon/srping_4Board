@@ -19,7 +19,7 @@
 	</insert>
 	
 	<update id="update" parameterType="org.iclass.dto.CommunityDto">
-		update community set title=#{title}, content=#{content} where idx=#{idx}
+		update community set title=#{title}, content=#{content}, ip=#{ip} where idx=#{idx}
 	</update>
 	
 	<delete id="delete" parameterType="int">
